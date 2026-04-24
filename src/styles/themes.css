@@ -1,0 +1,53 @@
+:root {
+  --bg-app: #f8f9fb;
+  --bg-canvas: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-hover: var(--neutral-50);
+  --bg-active: var(--primary-50);
+  --bg-input: #ffffff;
+  --bg-node: #ffffff;
+  --bg-node-start: var(--primary-50);
+  --bg-node-message: #ffffff;
+  --bg-node-question: var(--accent-50);
+  --bg-node-end: var(--neutral-100);
+  --bg-chat: #f8f9fb;
+  --bg-chat-bot: #ffffff;
+  --bg-chat-user: var(--primary-500);
+  --bg-connection: var(--neutral-400);
+  --bg-connection-active: var(--primary-500);
+  --bg-toolbar: #ffffff;
+
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-tertiary: var(--neutral-400);
+  --text-inverse: #ffffff;
+  --text-on-primary: #ffffff;
+  --text-link: var(--primary-600);
+  --text-node-title: var(--neutral-800);
+  --text-node-body: var(--neutral-600);
+  --text-chat-bot: var(--neutral-800);
+  --text-chat-user: #ffffff;
+
+  --border-app: var(--neutral-200);
+  --border-canvas: var(--neutral-200);
+  --border-panel: var(--neutral-200);
+  --border-input: var(--neutral-300);
+  --border-node: var(--neutral-200);
+  --border-node-start: var(--primary-300);
+  --border-node-message: var(--neutral-200);
+  --border-node-question: var(--accent-300);
+  --border-node-end: var(--neutral-300);
+  --border-connection: var(--neutral-300);
+  --border-focus: var(--primary-500);
+  --border-hover: var(--neutral-400);
+
+  --color-start: var(--primary-500);
+  --color-message: var(--secondary-500);
+  --color-question: var(--accent-500);
+  --color-end: var(--neutral-500);
+  --color-connection: var(--neutral-400);
+  --color-connection-highlight: var(--primary-500);
+  --color-grid: var(--neutral-100);
+  --color-grid-dot: var(--neutral-300);
+}
