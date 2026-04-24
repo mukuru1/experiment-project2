@@ -25,6 +25,14 @@ export function validateNode(node) {
     }
   }
 
+  if (node.type === 'start' && node.data.options?.length > 0) {
+    node.data.options.forEach((opt, i) => {
+      if (!opt.label?.trim()) {
+        errors.push(`Option ${i + 1} label is required`);
+      }
+    });
+  }
+
   return errors;
 }
 

@@ -21,10 +21,7 @@ export default function ChatWindow() {
     setEnded(false);
     setWaitingForInput(false);
 
-    const next = getNextNode(start.id);
-    if (next) {
-      processNode(next);
-    }
+    processNode(start);
   }, [nodes, connections]);
 
   const processNode = useCallback(
@@ -37,7 +34,25 @@ export default function ChatWindow() {
 
       setCurrentNode(node);
 
-      if (node.type === 'message') {
+      if (node.type === 'start') {
+        if (node.data.text) {
+          setMessages((prev) => [
+            ...prev,
+            { type: 'bot', text: node.data.text },
+          ]);
+        }
+        if (node.data.options?.length > 0) {
+          setWaitingForInput(true);
+        } else {
+          const next = getNextNode(node.id);
+          if (next) {
+            setTimeout(() => processNode(next), 400);
+          } else {
+            setEnded(true);
+            setWaitingForInput(false);
+          }
+        }
+      } else if (node.type === 'message') {
         setMessages((prev) => [
           ...prev,
           { type: 'bot', text: node.data.text || 'No message' },
@@ -54,11 +69,16 @@ export default function ChatWindow() {
           ...prev,
           { type: 'bot', text: node.data.text || 'No question' },
         ]);
-        setWaitingForInput(true);
+        if (node.data.options?.length > 0) {
+          setWaitingForInput(true);
+        } else {
+          setEnded(true);
+          setWaitingForInput(false);
+        }
       } else if (node.type === 'end') {
         setMessages((prev) => [
           ...prev,
-          { type: 'bot', text: 'Conversation ended. Thank you!' },
+          { type: 'bot', text: node.data.text || 'Conversation ended. Thank you!' },
         ]);
         setEnded(true);
         setWaitingForInput(false);

@@ -59,7 +59,7 @@ export default function NodeEditor() {
         />
       )}
 
-      {/* Question text */}
+      {/* Question text and options */}
       {editingNode.type === 'question' && (
         <>
           <TextArea
@@ -74,6 +74,34 @@ export default function NodeEditor() {
             onChange={(options) => handleChange('options', options)}
           />
         </>
+      )}
+
+      {/* Start node text and options */}
+      {editingNode.type === 'start' && (
+        <>
+          <TextArea
+            label="Welcome Message"
+            value={editingNode.data.text || ''}
+            onChange={(e) => handleChange('text', e.target.value)}
+            placeholder="Welcome message for the user..."
+            rows={3}
+          />
+          <OptionEditor
+            options={editingNode.data.options || []}
+            onChange={(options) => handleChange('options', options)}
+          />
+        </>
+      )}
+
+      {/* End node text */}
+      {editingNode.type === 'end' && (
+        <TextArea
+          label="Closing Message"
+          value={editingNode.data.text || ''}
+          onChange={(e) => handleChange('text', e.target.value)}
+          placeholder="Message when flow ends..."
+          rows={3}
+        />
       )}
 
       {/* Delete button */}

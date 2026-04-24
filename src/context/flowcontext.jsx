@@ -1,18 +1,49 @@
 import { createContext, useContext, useReducer, useCallback } from 'react';
 import { nanoid } from 'nanoid';
+import flowData from '../flow_data.json';
 
 const FlowContext = createContext(null);
 
-const initialState = {
-  nodes: [
-    {
-      id: 'start-1',
-      type: 'start',
-      position: { x: 100, y: 200 },
-      data: { label: 'Start' },
+function convertFlowData(raw) {
+  const nodes = raw.nodes.map((n) => ({
+    id: n.id,
+    type: n.type,
+    position: n.position,
+    data: {
+      label: n.type === 'start' ? 'Start' : n.type === 'end' ? 'End' : n.text?.slice(0, 30) || n.type,
+      text: n.text || '',
+      options: n.options?.map((opt, i) => ({
+        id: nanoid(6),
+        label: opt.label,
+        nextId: opt.nextId,
+      })) || [],
     },
-  ],
-  connections: [],
+  }));
+
+  const connections = [];
+  raw.nodes.forEach((n) => {
+    if (n.options) {
+      n.options.forEach((opt, i) => {
+        if (opt.nextId) {
+          connections.push({
+            id: nanoid(8),
+            sourceId: n.id,
+            targetId: opt.nextId,
+            sourcePort: i,
+          });
+        }
+      });
+    }
+  });
+
+  return { nodes, connections };
+}
+
+const convertedData = convertFlowData(flowData);
+
+const initialState = {
+  nodes: convertedData.nodes,
+  connections: convertedData.connections,
   selectedNodeId: null,
   editingNodeId: null,
   previewState: null,
@@ -115,22 +146,22 @@ function flowReducer(state, action) {
 function getDefaultData(type) {
   switch (type) {
     case 'start':
-      return { label: 'Start' };
+      return { label: 'Start', text: '', options: [] };
     case 'message':
-      return { label: 'Message', text: '' };
+      return { label: 'Message', text: '', options: [] };
     case 'question':
       return {
         label: 'Question',
         text: '',
         options: [
-          { id: nanoid(6), label: 'Option 1' },
-          { id: nanoid(6), label: 'Option 2' },
+          { id: nanoid(6), label: 'Option 1', nextId: null },
+          { id: nanoid(6), label: 'Option 2', nextId: null },
         ],
       };
     case 'end':
-      return { label: 'End' };
+      return { label: 'End', text: '', options: [] };
     default:
-      return { label: 'Node' };
+      return { label: 'Node', text: '', options: [] };
   }
 }
 

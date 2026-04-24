@@ -74,10 +74,38 @@ export default function FlowNode({
           </>
         )}
         {node.type === 'start' && (
-          <p className="text-xs text-neutral-400 italic">Flow entry point</p>
+          <>
+            {node.data.text && (
+              <p className="text-xs text-neutral-500 line-clamp-1 mb-1.5">
+                {node.data.text}
+              </p>
+            )}
+            {node.data.options?.length > 0 ? (
+              <div className="flex flex-col gap-1">
+                {node.data.options.map((opt, i) => (
+                  <div
+                    key={opt.id}
+                    className="text-xs px-2 py-1 rounded-md bg-white border border-primary-200 text-primary-600 truncate"
+                  >
+                    {opt.label}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-neutral-400 italic">Flow entry point</p>
+            )}
+          </>
         )}
         {node.type === 'end' && (
-          <p className="text-xs text-neutral-400 italic">Flow ends here</p>
+          <>
+            {node.data.text ? (
+              <p className="text-xs text-neutral-500 line-clamp-2">
+                {node.data.text}
+              </p>
+            ) : (
+              <p className="text-xs text-neutral-400 italic">Flow ends here</p>
+            )}
+          </>
         )}
       </div>
 
@@ -106,8 +134,8 @@ export default function FlowNode({
         />
       )}
 
-      {/* Option ports for question nodes */}
-      {node.type === 'question' &&
+      {/* Option ports for question and start nodes with options */}
+      {(node.type === 'question' || (node.type === 'start' && node.data.options?.length > 0)) &&
         node.data.options?.map((opt, i) => {
           const total = node.data.options.length;
           const spacing = NODE_WIDTH / (total + 1);

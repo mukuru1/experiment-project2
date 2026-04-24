@@ -33,8 +33,13 @@ export function getOptionPortPosition(node, optionIndex, totalOptions) {
 }
 
 export function getNodeHeight(node) {
-  if (node.type === 'question' && node.data.options) {
-    return NODE_HEADER_HEIGHT + 32 + node.data.options.length * 32 + 16;
+  const hasOptions = node.data.options?.length > 0;
+  if ((node.type === 'question' || node.type === 'start') && hasOptions) {
+    const textHeight = node.data.text ? 24 : 0;
+    return NODE_HEADER_HEIGHT + textHeight + node.data.options.length * 32 + 16;
+  }
+  if (node.type === 'end' && node.data.text) {
+    return NODE_HEADER_HEIGHT + 48;
   }
   return NODE_HEADER_HEIGHT + 48;
 }
